@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+  <meta charset="UTF-8">
+  <title>新春大礼包</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=no" />  
+  <meta name="format-detection" content="telephone=no,email=no">
+  <meta name="x5-fullscreen" content="true">
+  <meta name="full-screen" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+  <script src="lib/rem.js"></script>
+  <script>
+    window['adaptive'].desinWidth = 750;
+    window['adaptive'].baseFont = 28;
+    window['adaptive'].scaleType = 1;
+    window['adaptive'].init();  
+  </script>
+  <link rel="stylesheet" href="dist/style/style.css">
+</head>
+
+<body>
+
+  <section class="global-container">
+    
+    <div class="main">
+      
+      <div class="share-content">
+        <p class="bless">新年好礼</p>
+        <img class="solid" src="static/solid.png" />
+        <p class="share-tips">登录医联App<br />拆礼包得现金羽毛23是这样1黑ww</p>
+        <div class="btn-download">进入医联App喜拆礼包按搜索是时</div>
+      </div>
+
+    </div>
+
+  </section>
+
+  
+  <script type="text/javascript" src="http://api.drresource.com/h5/lib/jquery.min.js"></script>
+  <script type="text/javascript" src="lib/web-js-sdk.js"></script>
+  <script>
+    var ua = navigator.userAgent.toLowerCase()
+    var phoneType = /iphone|ipad|ipod/i.test(ua) ? 'ios' : 'and'
+    var isWx = /MicroMessenger/i.test(ua) ? true : false
+    var isQQ = /QQ\/[0-9]/i.test(ua) ? true : false
+    var isWb = /weiBo/i.test(ua) ? true : false
+    var isMed = MedSDK.med.env.hybrid
+
+    if (isWx) {
+      weixinShare('2019拆红包，新春祝福迎到手', '医联', 'http://api.drresource.com/h5/medlinker/spring-rewards/static/share-icon.jpg')
+    }
+    
+    $('.btn-download').click(function() {
+      var isTest = window.location.href.indexOf('?test=') > 0 ? true : false
+      $.ajax({
+        type: 'get',
+        url: isTest ? 'http://data-bi.qa.medlinker.com/web_pageview/collect' : 'http://data.medlinker.com/web_pageview/collect',
+        data: {
+          business: 'new_year_red',
+          page: 'page_share',
+          opertype: 'click_enter_app'
+        }
+      })
+      var jumpUrl = isTest ? 
+        '/hybridlink?url=http://api.drresource.com/h5/medlinker/spring-rewards/index.html?test=1'
+        : '/hybridlink?url=http://api.drresource.com/h5/medlinker/spring-rewards/index.html'
+      MedSDK.med.openApp(jumpUrl)
+    })
+    document.body.addEventListener('touchmove',
+      function(e) {e.preventDefault()}, {passive: false}
+    )
+    function weixinShare(title, desc, imgUrl){
+      var oUrl = window.location.href
+      var wxUrl = ''
+      $.ajax({
+        type: 'POST',
+        data: {
+          url: oUrl
+        },
+        url: 'https://api.drresource.com/v1/activity/getwx',
+        success: function(res) {
+          wxUrl = res.ret.url;
+          window.wx.config({
+            debug: false,
+            appId: res.ret.appid, // 公众号的唯一标识
+            timestamp: res.ret.timestamp, // 生成签名的时间戳
+            nonceStr: res.ret.noncestr, // 生成签名的随机串
+            signature: res.ret.wxsign,
+            jsApiList:['checkJsApi', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone']
+          })
+          window.wxshareData = {
+            title: title,
+            desc: desc,
+            link: wxUrl,
+            imgUrl: imgUrl
+          }
+          // 朋友圈
+          window.pyqshareData = {
+            title: title,
+            link: wxUrl,
+            imgUrl: imgUrl
+          }
+          wx.onMenuShareTimeline(pyqshareData)
+          wx.onMenuShareAppMessage(wxshareData)
+          wx.onMenuShareQZone(wxshareData)
+          wx.onMenuShareQQ(wxshareData)
+          wx.onMenuShareWeibo(wxshareData)
+        }
+      })
+    }
+  </script>
+</body>
+
+</html>
+
