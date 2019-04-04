@@ -1,5 +1,4 @@
 @charset 'UTF-8';
-
 body,
 div,
 p,
@@ -13,7 +12,6 @@ textarea {
 }
 img {
   display: block;
-
   border: none;
 }
 ol,

@@ -1,44 +1,41 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-
 <head>
   <meta charset="UTF-8">
-  <title>新春大礼包</title>
+  <title>HKDL</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, maximum-scale=1, user-scalable=no" />  
   <meta name="format-detection" content="telephone=no,email=no">
   <meta name="x5-fullscreen" content="true">
   <meta name="full-screen" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <script src="lib/axios.js"></script>
+  <script src="lib/jQuery.min.js"></script>
   <script src="lib/rem.js"></script>
+  <!-- <script src="lib/autotrack.js"></script> -->
   <script>
     window['adaptive'].desinWidth = 750;
     window['adaptive'].baseFont = 28;
     window['adaptive'].scaleType = 1;
     window['adaptive'].init();  
   </script>
-  <link rel="stylesheet" href="dist/style/style.css">
-  <link rel="stylesheet" href="dist/style/index.css">
+  <link rel="stylesheet" href="build/style/style.css">
+  <link rel="stylesheet" href="build/style/index.css">
 </head>
 
 <body>
-  
-  <section class="global-container">
-    <div class="box">
-
+  <div id='wrap'>
+    <!-- 判断是否是好奇粉丝 -->
+    <div class="no_fans">出现二维码弹窗关注</div>
+    <div class="is_fans">
+      <div id='picker5'>picker</div>
     </div>
-  </section>
-  
+  </div>
   <script src="lib/fastclick.min.js"></script>
-  <script>
-    if ('addEventListener' in document) {
-      document.addEventListener('DOMContentLoaded', function() {
-        FastClick.attach(document.body);
-      }, false);
-    }
-
-  </script>
-  <script type="text/javascript" src="dist/script/main.js"></script>
+  <script src="build/script/index.js"></script>
+  <script src="lib/city/picker.min.js"></script>
+  <script src="lib/city/city.js"></script>
+  <script src="lib/city/index.js"></script>
 </body>
 
 </html>

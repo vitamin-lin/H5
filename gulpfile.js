@@ -18,12 +18,12 @@ var gulp = require('gulp'),
 var paths = {
   styles: {
     src: 'src/less/*.less',
-    dest: 'dist/style/'
+    dest: 'build/style/'
   },
   scripts: {
     src: 'src/js/*.js',
-    dest: 'dist/script/'
-  }
+    dest: 'build/script/'
+  },
 }
 
 /* reduce styles */
@@ -38,6 +38,31 @@ function stylesBuild() {
     .pipe(cleanCSS())
     .pipe(gulp.dest(paths.styles.dest))
 }
+function Build_static() {
+  return gulp.src('static/**/*')
+    .pipe(gulp.dest('dist/static'))
+}
+
+function Build_build() {
+  return gulp.src('build/**/*')
+    .pipe(gulp.dest('dist/build'))
+}
+
+function Build_lib() {
+  return gulp.src('lib/**/*')
+    .pipe(gulp.dest('dist/lib'))
+}
+
+function Build_html() {
+  return gulp.src('*.html')
+    .pipe(gulp.dest('dist/'));
+}
+function Build_js() {
+  return gulp.src(['./src/js/**/*', '!./src/js/main.js'])
+    .pipe(gulp.dest('build/script/'))
+    .pipe(gulp.dest('dist/build/script/'));
+}
+
 
 /* reduce scripts */
 function scriptsDev() {
@@ -82,7 +107,7 @@ function hot() {
   browserSync.init({
     server: {
       baseDir: './',
-      // middleware: proxyApis
+      middleware: proxyApis
     }
   });
 }
@@ -106,8 +131,8 @@ styleWatcher.on('change', function() {
     parallel: 并行执行
     series: 顺序执行
 */
-var dev = gulp.series(gulp.parallel(stylesDev, scriptsDev), hot)
-var build = gulp.series(clean, gulp.parallel(stylesBuild, scriptsBuild))
+var dev = gulp.series(gulp.parallel(stylesDev, scriptsDev, Build_js), hot)
+var build = gulp.series(clean, gulp.parallel(stylesBuild, scriptsBuild, Build_static, Build_lib, Build_build, Build_html, Build_js))
 
 gulp.task('dev', dev)
 gulp.task('build', build)

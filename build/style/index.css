@@ -1,0 +1,13 @@
+#wrap {
+  width: 7.5rem;
+  height: 100%;
+  background: #dddcda;
+  line-height: 1.92rem;
+  text-align: center;
+}
+#wrap .is_fans {
+  display: none;
+}
+#wrap .no_fans {
+  display: none;
+}
